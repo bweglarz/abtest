@@ -1,0 +1,14 @@
+groups: 
+    - name: group0
+      weight: 10
+    - name: group1
+      weight: 8
+    - name: group2
+      weight: 5
+    - name: group3
+      weight: 1
+
+server:
+  type: default
+  maxThreads: 128
+  minThreads: 8  
