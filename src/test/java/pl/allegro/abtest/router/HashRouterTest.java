@@ -1,6 +1,5 @@
 package pl.allegro.abtest.router;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -10,31 +9,21 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.google.common.collect.ImmutableMap;
+
 public class HashRouterTest extends TestCase {
 
 	@Test
 	public void testSameGroupAssignment() {
-		Map<String, Integer> weights = new HashMap<String, Integer>();
-		weights.put("Group0", 5);
-		weights.put("Group1", 3);
-		weights.put("Group2", 2);
-		weights.put("Group3", 1);
-		weights.put("Group4", 1);
+
+		ImmutableMap<String, Integer> weights = new ImmutableMap.Builder<String, Integer>()
+				.put("Group0", 5).put("Group1", 3).put("Group2", 2)
+				.put("Group3", 1).put("Group4", 1).build();
 
 		HashRouter router = new HashRouter(weights);
-
-		// int size = 5 + 3 + 2 + 1 + 1;
 		assertEquals(router.route("abcdef"), router.route("abcdef"));
-		// Math.abs("abcdef".hashCode()) % size = 1
-		// assertEquals(router.route("abcdef"),"Group1");
-
 		assertEquals(router.route("xxxxx"), router.route("xxxxx"));
-		// Math.abs("xxxxx".hashCode()) % size = 0
-		// assertEquals(router.route("xxxxx"),"Group0");
-
 		assertEquals(router.route("123456"), router.route("123456"));
-		// Math.abs("123456".hashCode()) % size = 3
-		// assertEquals(router.route("123456"),"Group3");
 	}
 
 	@Test
