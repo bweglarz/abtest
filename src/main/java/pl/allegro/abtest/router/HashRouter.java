@@ -1,5 +1,6 @@
 package pl.allegro.abtest.router;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +52,7 @@ public class HashRouter implements Router {
 				}
 			}
 		}
+		Collections.shuffle(list);
 		return ImmutableList.copyOf(list);
 	}
 
