@@ -4,6 +4,8 @@ import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import pl.allegro.abtest.configuration.ABTestConfiguration;
+import pl.allegro.abtest.resources.AssignGroupResource;
+import pl.allegro.abtest.router.HashRouter;
 
 public class ABTestApplication extends Application<ABTestConfiguration> {
 
@@ -23,5 +25,6 @@ public class ABTestApplication extends Application<ABTestConfiguration> {
 
 	@Override
 	public void run(ABTestConfiguration configuration, Environment environment) {
+		environment.jersey().register(new AssignGroupResource(new HashRouter(configuration.groupsToMap())));
 	}
 }
