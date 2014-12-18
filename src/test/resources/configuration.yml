@@ -1,0 +1,4 @@
+groups: 
+    - name: testgroup
+      weight: 10
+
