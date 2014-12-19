@@ -1,18 +1,16 @@
 package pl.allegro.abtest.router;
 
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 /**
  * The class implements a simple way of assigning user ids to groups with a
- * given distribution. </br> The internal <code>groups</code> list should
+ * given distribution. </br> The internal <code>groups</code> array should
  * contain the groups names with each group name being stored as many times as
  * the input mapping specifies so we can mimic the distribution. </br> Upon a
  * call to <code>route</code> method the input parameter should be hashed. The
@@ -22,8 +20,8 @@ import com.google.common.collect.Maps;
  * @author bweglarz
  */
 public class HashRouter implements Router {
-
-	private List<String> groups = null;
+	
+	private String[] groups = null;
 
 	public HashRouter(Map<String, Integer> mapping) {
 		Preconditions.checkNotNull(mapping);
@@ -32,7 +30,7 @@ public class HashRouter implements Router {
 		groups = initializeGroups(mapping);
 	}
 
-	private List<String> initializeGroups(Map<String, Integer> mapping) {
+	private String[] initializeGroups(Map<String, Integer> mapping) {
 		Map<String,Integer> temporary = Maps.newHashMap(mapping);
 		List<String> list = Lists.newArrayList();
 
@@ -52,17 +50,17 @@ public class HashRouter implements Router {
 				}
 			}
 		}
-		Collections.shuffle(list);
-		return ImmutableList.copyOf(list);
+		//Collections.shuffle(list);
+		return list.toArray(new String[list.size()]);
 	}
 
 	/**
 	 * Hashes the input parameter and gets performs a modulo operation to get an index to
-	 * the <code>groups</code> list.
+	 * the <code>groups</code> array.
 	 */
 	@Override
 	public String route(String userId) {
 		Preconditions.checkNotNull(userId);
-		return groups.get(Math.abs(userId.hashCode()) % groups.size());
+		return groups[Math.abs(userId.hashCode()) % groups.length];
 	}
 }
